@@ -1,0 +1,359 @@
+function NotiyTeamCS_PC(e) { // NotifyTeamCS&PC//
+if (e && 'value' in e) {
+  var token = 'V6h9Vji9KxYGvRaJXmFitKRSVE4inGvXxKugfrGGBxf'; // Line Notify token
+  var ssID = '1In1xAUn5NimgfcseuFxSGuy5BDfxAZGLFKiLeWcA-AY'; // Spreadsheet ID
+  var sheetName = 'New Product'; // Sheet name in the spreadsheet
+  var range = e.range;
+  var sheet = range.getSheet();
+
+  // Check if the edited sheet is the specified sheet
+  if (sheet.getName() !== sheetName) {
+    return;
+  }
+  
+  var column = range.getColumn();
+  var row = range.getRow();
+
+  // Get values of the header and the edited cell in the specified column
+  var header = sheet.getRange(1, column).getValue();
+  var rowEdit = sheet.getRange(row, column).getValue();
+
+  // Get the current date in the desired format
+  var date = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy');
+
+   if (header !== e.oldValue && rowEdit === 'Approved') {
+    // Retrieve data from the active sheet
+    var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+    var dataValues = dataRange.getValues()[0];
+
+    // Message to be sent for "Approved" status
+    var message =
+  '\n\n👉 Date : ' + dataValues[0] +
+  '\n\n👉 Due Date : ' + dataValues[35] +
+  '\n\n👉 Status : ' + dataValues[1] +
+  '\n\n👉 Brand : ' + dataValues[2] +
+  '\n\n👉 SKU : ' + dataValues[3] +
+  '\n\n👉 Row  : '  + row + 
+  '\n\n👉 Image Path:' + dataValues[32] +
+  '\n\n📌 ลงสินค้าใหม่ และ Copy Product รายละเอียดงานใน Sheet New Product'+
+  '\n\n📌 สินค้าใหม่ตรวจเรียบร้อย CS & PC สามารถลงสินค้าและ Copy ได้เลยครับ ใส่ Product ID แล้วรบกวนเปลี่ยน Status เป็น Insert Product ID ด้วยนะครับ';
+       sendLineNotify(message, token);
+   
+      
+    } else if (header !== e.oldValue && rowEdit === 'Add Variation') {
+  // Retrieve data from the active sheet
+  var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+  var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "Add Variation" status
+    var message =
+      '\n\nวันที่: ' + dataValues[0] +
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status: ' + dataValues[1] +
+      '\n\n👉 Brand: ' + dataValues[2] +
+      '\n\n👉 SKU: ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 Image Path:' + dataValues[32] +
+      '\n\n📌  เพิ่มตัวเลือกสินค้า รายละเอียดงานใน Sheet New Product';
+    sendLineNotify(message, token);
+
+   } else if (header !== e.oldValue && rowEdit === 'Already Copy') {
+  // Retrieve data from the active sheet
+  var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+  var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "Already Copy" status
+    var message =
+      '\n\nวันที่: ' + dataValues[0] +
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status: ' + dataValues[1] +
+      '\n\n👉 Brand: ' + dataValues[2] +
+      '\n\n👉 SKU: ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n📌  สินค้าลงเสร็จแล้ว PC Copy ได้เลย ';
+    sendLineNotify(message, token);
+
+    } else if (header !== e.oldValue && rowEdit === 'Update Product Image') {
+  // Retrieve data from the active sheet
+  var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+  var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "Update Product Image" status
+    var message =
+      '\n\nวันที่: ' + dataValues[0] +
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status: ' + dataValues[1] +
+      '\n\n👉 Brand: ' + dataValues[2] +
+      '\n\n👉 SKU: ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 Image Path:' + dataValues[32] +
+      '\n\n📌  สินค้า Copy เรียบร้อย CS Update Product Image ได้เลย ';
+    sendLineNotify(message, token);
+
+   }
+      
+  function sendLineNotify(message, token) {
+  var url = 'https://notify-api.line.me/api/notify';
+  var jsonData = { 'message': message };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/x-www-form-urlencoded',
+    'payload': jsonData,
+    'headers': { 'Authorization': 'Bearer ' + token }
+  };
+  var response = UrlFetchApp.fetch(url, options);
+  }
+  }
+}
+///////////////////////
+
+
+function NotifyProduct9plus(e) { // NotifyProduct9plus//
+ if ('value' in e) {
+  var tokenGroup1 = 'mnVHOUhktleJv6KxTwTC0hNFb6CMjIufU8YifwIcp1X'; // Line Notify token
+  var tokenGroup2 = 'V6h9Vji9KxYGvRaJXmFitKRSVE4inGvXxKugfrGGBxf'; // Line Notify token for group 2
+  var ssID = '1In1xAUn5NimgfcseuFxSGuy5BDfxAZGLFKiLeWcA-AY'; // Spreadsheet ID
+  var sheetName = 'New Product'; // Sheet name in the spreadsheet
+  var range = e.range;
+  var sheet = range.getSheet();
+  
+  // Check if the edited sheet is the specified sheet
+  if (sheet.getName() !== sheetName) {
+    return;
+  }
+  
+  var column = range.getColumn();
+  var row = range.getRow();
+
+  // Get values of the header and the edited cell in the specified column
+  var header = sheet.getRange(1, column).getValue();
+  var rowEdit = sheet.getRange(row, column).getValue();
+
+  // Get the current date in the desired format
+  var date = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy');
+
+  if (header !== e.oldValue && rowEdit === 'New') {
+    // Retrieve data from the active sheet
+    var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+    var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "New" status
+    var message =
+      '\n\n👉 Date : ' + dataValues[0] +
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status : ' + dataValues[1] +
+      '\n\n👉 Brand : ' + dataValues[2] +
+      '\n\n👉 SKU  : ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 Image Path:' + dataValues[32] +
+      '\n\n📌 สินค้าใหม่มาแล้ว!! รบกวนตรวจรายละเอียด และรูปสินค้าตรวจเสร็จคนสุดท้ายรบกวนเปลี่ยน Status เป็น Approved ด้วยนะครับ';
+
+    sendLineNotify(message, tokenGroup1); // Send message to group 1
+    sendLineNotify(message, tokenGroup2); // Send message to group 2
+  }else
+
+    if (header !== e.oldValue && rowEdit === 'Done') {
+      // Retrieve data from the active sheet
+      var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+      var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "Done" status
+    var message =
+      '\n\n👉 Date : ' + dataValues[0] +
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status : ' + dataValues[1] +
+      '\n\n👉 Brand : ' + dataValues[2] +
+      '\n\n👉 SKU  : ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 Image Path:' + dataValues[32] +
+    '\n\n📌 เพิ่มสินค้าใหม่'+ dataValues[3] + 'เสร็จเรียบร้อย ';
+
+
+     sendLineNotify(message, tokenGroup1); // Send message to group 1
+    
+  }
+  
+
+    function sendLineNotify(message, token) {
+  var url = 'https://notify-api.line.me/api/notify';
+  var jsonData = { 'message': message };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/x-www-form-urlencoded',
+    'payload': jsonData,
+    'headers': { 'Authorization': 'Bearer ' + token }
+  };
+  var response = UrlFetchApp.fetch(url, options);
+  }
+ }
+}
+///////////////////////
+
+
+function NotifyTeamCT_PC(e) { // NotifyTeamCT&PC//
+ if ('value' in e) {
+  var token = 'zFt3BnvDcdQY76q8kdrVLVDYUXLqFXrOdHC9IFCRnAR'; // Line Notify token
+  var ssID = '1In1xAUn5NimgfcseuFxSGuy5BDfxAZGLFKiLeWcA-AY'; // Spreadsheet ID
+  var sheetName = 'New Product'; // Sheet name in the spreadsheet
+  var range = e.range;
+  var sheet = range.getSheet();
+  
+  // Check if the edited sheet is the specified sheet
+  if (sheet.getName() !== sheetName) {
+    return;
+  }
+  
+  var column = range.getColumn();
+  var row = range.getRow();
+
+  // Get values of the header and the edited cell in the specified column
+  var header = sheet.getRange(1, column).getValue();
+  var rowEdit = sheet.getRange(row, column).getValue();
+
+  // Get the current date in the desired format
+  var date = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy');
+
+  if (header !== e.oldValue && rowEdit === 'Update Price & Insert Product ID') {
+    // Retrieve data from the active sheet
+    var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+    var dataValues = dataRange.getValues()[0];
+
+    // Message to be sent for "Update Price & Insert Product ID" status
+    var message =
+      '\n\n👉 Date: ' + dataValues[0] + 
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status: ' + dataValues[1] +
+      '\n\n👉 Brand: ' + dataValues[2] +
+      '\n\n👉 SKU: ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 จุดเด่นสินค้า: \n' + dataValues[19] +
+      '\n\n👉 Image Path:' + dataValues[32] +
+      '\n\n👉 ATM: '+ dataValues[50] +
+      '\n\n👉 ELOOPTH: ' + dataValues[51] +
+      '\n\n👉 ELOOPPB: ' + dataValues[52] +
+      '\n\n👉 ORSENTH: ' + dataValues[53] ;
+
+    sendLineNotify(message, token);
+
+    var message =
+      
+      '\n\n👉 ORSENPB: ' + dataValues[54] +
+      '\n\n👉 BEZT: ' + dataValues[55] +
+      '\n\n👉 GX: ' + dataValues[56] +
+      '\n\n👉 LNW: ' + dataValues[57] +
+      '\n\n👉 XIAOMI: ' + dataValues[58] +
+      '\n\n👉 MOOV: ' + dataValues[59] +
+      '\n\n👉 YOUPIN: ' + dataValues[61] +
+      '\n\n👉 MOMO: ' + dataValues[62] +
+      '\n\n👉 ELOOPST: ' + dataValues[63] +
+      '\n\n📌 สินค้าใหม่ใส่ Product ID เรียบร้อยสามารถทำรูปปกสินค้าได้เลยครับ';
+
+    sendLineNotify(message, token);
+  }else
+      
+    if (header !== e.oldValue && rowEdit === 'Add Variation (Cover)') {
+      // Retrieve data from the active sheet
+      var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+      var dataValues = dataRange.getValues()[0];
+
+      // Message to be sent for "Add Variation (Cover)" status
+    var message =
+      '\n\n👉 Date: ' + dataValues[0] + 
+      '\n\n👉 Due Date : ' + dataValues[35] +
+      '\n\n👉 Status: ' + dataValues[1] +
+      '\n\n👉 Brand: ' + dataValues[2] +
+      '\n\n👉 SKU: ' + dataValues[3] +
+      '\n\n👉 Row  : '  + row + 
+      '\n\n👉 จุดเด่นสินค้า: \n' + dataValues[19] +
+      '\n\n👉 Image Path:' + dataValues[32] +
+      '\n\n👉 ATM: '+ dataValues[50] +
+      '\n\n👉 ELOOPTH: ' + dataValues[51] +
+      '\n\n👉 ELOOPPB: ' + dataValues[52] +
+      '\n\n👉 ORSENTH: ' + dataValues[53] ;
+
+    sendLineNotify(message, token);
+
+    var message =
+      
+      '\n\n👉 ORSENPB: ' + dataValues[54] +
+      '\n\n👉 BEZT: ' + dataValues[55] +
+      '\n\n👉 GX: ' + dataValues[56] +
+      '\n\n👉 LNW: ' + dataValues[57] +
+      '\n\n👉 XIAOMI: ' + dataValues[58] +
+      '\n\n👉 MOOV: ' + dataValues[59] +
+      '\n\n👉 YOUPIN: ' + dataValues[61] +
+      '\n\n👉 MOMO: ' + dataValues[62] +
+      '\n\n👉 ELOOPST: ' + dataValues[63] +
+      '\n\n📌 เพิ่มตัวเลือกสินค้า รายละเอียดงานใน Sheet New Product';
+    sendLineNotify(message, token);
+  }
+   }
+  function sendLineNotify(message, token) {
+  var url = 'https://notify-api.line.me/api/notify';
+  var jsonData = { 'message': message };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/x-www-form-urlencoded',
+    'payload': jsonData,
+    'headers': { 'Authorization': 'Bearer ' + token }
+  };
+  var response = UrlFetchApp.fetch(url, options);
+  }
+}
+///////////////////////
+
+
+function NotifMM(e) { // NotifyTeamMM//
+ if ('value' in e) {
+  var token = 'DrnVDwRxcH2tDXB0vydqJZqwz9MPONUSFFzRwxvZsxo'; // Line Notify token
+  var ssID = '1In1xAUn5NimgfcseuFxSGuy5BDfxAZGLFKiLeWcA-AY'; // Spreadsheet ID
+  var sheetName = 'New Product'; // Sheet name in the spreadsheet
+  var range = e.range;
+  var sheet = range.getSheet();
+  
+  // Check if the edited sheet is the specified sheet
+  if (sheet.getName() !== sheetName) {
+    return;
+  }
+  
+  var column = range.getColumn();
+  var row = range.getRow();
+
+  // Get values of the header and the edited cell in the specified column
+  var header = sheet.getRange(1, column).getValue();
+  var rowEdit = sheet.getRange(row, column).getValue();
+
+  // Get the current date in the desired format
+  var date = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy');
+
+  if (header !== e.oldValue && rowEdit === 'Update Price & Insert Product ID') {
+    // Retrieve data from the active sheet
+    var dataRange = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+    var dataValues = dataRange.getValues()[0];
+
+    // Message to be sent for "Update Price" status
+    var message =
+    '\n\n👉 Date : ' + dataValues[0] +
+    '\n\n👉 Due Date : ' + dataValues[35] +
+    '\n\n👉 Status : ' + dataValues[1] +
+    '\n\n👉 Brand : ' + dataValues[2] +
+    '\n\n👉 SKU : ' + dataValues[3] +
+    '\n\n👉 Row  : '  + row + 
+    '\n\n📌 พี่เต้ย พี่โอ๊ต ฝากอัพเดทราคาด้วยนะครับ น้องๆลงสินค้าเสร็จเรียบร้อย';
+
+    sendLineNotify(message, token);
+  }
+    }
+
+  function sendLineNotify(message, token) {
+  var url = 'https://notify-api.line.me/api/notify';
+  var jsonData = { 'message': message };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/x-www-form-urlencoded',
+    'payload': jsonData,
+    'headers': { 'Authorization': 'Bearer ' + token }
+  };
+  var response = UrlFetchApp.fetch(url, options);
+  }
+}
